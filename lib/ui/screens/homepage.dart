@@ -1,23 +1,38 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_social_app/services/authentication_service.dart';
+import 'package:provider/provider.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("Startseite"),
       ),
-      body: Center(),
+      body: Center(
+        child: CupertinoButton(
+          child: Text(
+            "Ausloggen",
+            style: TextStyle(color: Colors.white),
+          ), 
+          borderRadius: BorderRadius.circular(30),
+          color: Colors.indigo[800],
+          onPressed: (){
+            context.read<AuthenticationService>().signOut();
+          }
+        ),
+      ),
     );
   }
 }
