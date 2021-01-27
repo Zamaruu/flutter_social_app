@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_app/services/authentication_service.dart';
 import 'package:provider/provider.dart';
-
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+ 
 class LoginRoute extends StatefulWidget {
   @override
   _LoginRouteState createState() => _LoginRouteState();
@@ -14,6 +15,9 @@ class _LoginRouteState extends State<LoginRoute> {
   double _inputFiledMargin = 20;
   double _inputFiledPadding = 15;
   double _inputFieldTextSize = 20;
+  double _signInButtonFactor = 0.6;
+  double _signInButtonPadding = 10;
+  double _signInButtonMargin = 10;
   bool _hidePassword = true;
   int _minPasswordLength = 6;
 
@@ -138,40 +142,78 @@ class _LoginRouteState extends State<LoginRoute> {
 
   Container _loginButton(){
     return Container(
+      margin: EdgeInsets.all(_signInButtonMargin),
+      width: MediaQuery.of(context).size.width * _signInButtonFactor,
       child: CupertinoButton(
-        child: Text(
-          "Login",
-          style: _inputStyle,
-        ), 
+        padding: EdgeInsets.all(_signInButtonPadding),
+        child: _signinButtonContent("Konto Login", MdiIcons.account), 
         borderRadius: BorderRadius.circular(30),
         color: Colors.indigo[800],
-        onPressed: _validateLoginData
+        onPressed: _validateLoginData 
       ),
+    );
+  }
+
+  Container _googleSignInButton(){
+    return Container(
+      margin: EdgeInsets.all(_signInButtonMargin),
+      width: MediaQuery.of(context).size.width * _signInButtonFactor,
+      child: CupertinoButton(
+        padding: EdgeInsets.all(_signInButtonPadding),
+        child: _signinButtonContent("Google Login", MdiIcons.google), 
+        borderRadius: BorderRadius.circular(30),
+        color: Colors.red[900],
+        onPressed: (){
+          context.read<AuthenticationService>().signInWithGoogle();
+        } 
+      ),
+    );
+  }
+
+  Row _signinButtonContent(String content, IconData icon){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          content,
+          style: _inputStyle,
+        ),
+        SizedBox(width: 10,),
+        Icon(
+          icon,
+        ) 
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false, 
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width * _widgetWidthFactor,
-              child: Image.asset("images/branding/seriousfocus_brand_name.png"),
-            ),
-            Text(
-              "Login",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w600
+        child: Container(
+          //width: MediaQuery.of(context).size.width * _widgetWidthFactor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * _widgetWidthFactor,
+                child: Image.asset("images/branding/seriousfocus_brand_name.png"),
               ),
-            ),
-            _emailInputField(),
-            _passwordInputField(),
-            _loginButton()
-          ],
+              Text(
+                "Login",
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w600
+                ),
+              ),
+              _emailInputField(),
+              _passwordInputField(),
+              _loginButton(),
+              Text("oder"),
+              _googleSignInButton()
+            ],
+          ),
         ),
       )
     );
