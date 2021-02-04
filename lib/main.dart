@@ -32,6 +32,7 @@ class SeriousFocus extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          splashColor: Colors.indigo[800],
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: AuthenticationWrapper(),
@@ -45,6 +46,7 @@ class AuthenticationWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User>();
     if(firebaseUser != null){
+      context.read<AuthenticationService>().getUserCredentials();
       return HomePage();
     }
     else{

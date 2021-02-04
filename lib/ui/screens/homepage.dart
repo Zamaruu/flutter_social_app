@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_social_app/ui/widgets/appbar.dart';
 import 'package:flutter_social_app/ui/widgets/drawer.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,12 +17,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Homepage"
-        ),
-        backgroundColor: Colors.indigo[800],
-      ),
+      appBar: seriousFocusAppBar(title: "Homepage"),
       drawer: SeriousFocusDrawer(),
       body: Center(
 
