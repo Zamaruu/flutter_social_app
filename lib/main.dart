@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_social_app/services/authentication_service.dart';
 import 'package:flutter_social_app/ui/screens/homepage.dart';
 import 'package:flutter_social_app/ui/screens/login.dart';
@@ -16,6 +17,7 @@ Future<void> main() async {
 class SeriousFocus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    debugPaintSizeEnabled = false;
     return MultiProvider(
       providers: [
         Provider<AuthenticationService>(

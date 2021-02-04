@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_app/services/authentication_service.dart';
+import 'package:flutter_social_app/ui/screens/register.dart';
+import 'package:flutter_social_app/ui/widgets/alerts.dart';
 import 'package:provider/provider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
  
@@ -45,52 +47,25 @@ class _LoginRouteState extends State<LoginRoute> {
     _passwordController = new TextEditingController();
   }
 
-  _loginAlert({String title, String content}){
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => CupertinoAlertDialog(
-        title: new Text(title),
-        content: new Text(content),
-        actions: <Widget>[
-          CupertinoDialogAction(
-            isDefaultAction: true,
-            child: Text("Verstanden"),
-            onPressed: (){Navigator.pop(context);},
-          ),
-        ],
-      )
-    ); 
-  }
-
   _validateLoginData(){
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
 
-    if(!_validateEmail(email)){
-      print(_validateEmail(email));
-      _loginAlert(title: "Fehler bei E-Mail", content: "Bitte überprüfen sie Ihre E-Mail Adresse auf Fehler!");
+    if(!validateEmail(email)){
+      print(validateEmail(email));
+      authAlert(title: "Fehler bei E-Mail", content: "Bitte überprüfen sie Ihre E-Mail Adresse auf Fehler!", context: context);
       return;
     }
-    if(!_validatePassword(password)){
-      print(_validateEmail(password));
-      _loginAlert(title: "Fehler bei Passwort", content: "Bitte überprüfen sie Ihr Passwort!");
+    if(!validatePassword(password)){
+      print(validateEmail(password));
+      authAlert(title: "Fehler bei Passwort", content: "Bitte überprüfen sie Ihr Passwort!", context: context);
       return;
     }
     context.read<AuthenticationService>().signIn(email, password);
     //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyHomePage(title: "SeriousFocus",)), (route) => false);
   }
 
-  bool _validateEmail(String email){
-    bool emailValid = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(email);
-    return emailValid;
-  }
-
-  bool _validatePassword(String password){
-    String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
-    RegExp regExp = new RegExp(pattern);
-    return regExp.hasMatch(password);
-  }
-
+  
   Container _emailInputField(){
     return Container(
       margin: EdgeInsets.only(bottom: _inputFiledMargin, top: _inputFiledMargin),
@@ -146,7 +121,7 @@ class _LoginRouteState extends State<LoginRoute> {
       width: MediaQuery.of(context).size.width * _signInButtonFactor,
       child: CupertinoButton(
         padding: EdgeInsets.all(_signInButtonPadding),
-        child: _signinButtonContent("Konto Login", MdiIcons.account), 
+        child: _signinButtonContent("Anmelden", MdiIcons.account), 
         borderRadius: BorderRadius.circular(30),
         color: Colors.indigo[800],
         onPressed: _validateLoginData 
@@ -200,22 +175,25 @@ class _LoginRouteState extends State<LoginRoute> {
                 width: MediaQuery.of(context).size.width * _widgetWidthFactor,
                 child: Image.asset("images/branding/seriousfocus_brand_name.png"),
               ),
-              Text(
-                "Login",
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w600
-                ),
-              ),
               _emailInputField(),
               _passwordInputField(),
               _loginButton(),
-              Text("oder"),
+              Text("oder mit"),
               _googleSignInButton()
             ],
           ),
         ),
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(MdiIcons.accountPlus),
+        tooltip: "Neu Registrieren",
+        backgroundColor: Colors.indigo[800],
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => RegisterRoute())
+          );
+        },
+      ),
     );
   }
 }

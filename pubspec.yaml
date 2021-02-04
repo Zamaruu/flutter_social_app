@@ -32,6 +32,7 @@ dependencies:
   path_provider: ^1.6.27
   firebase_core:
   firebase_auth:
+  cloud_firestore: "^0.16.0"
   provider:
   google_sign_in:
   material_design_icons_flutter: ^4.0.5855

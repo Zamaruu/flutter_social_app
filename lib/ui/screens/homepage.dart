@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_app/services/authentication_service.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,13 +13,17 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
 
+
+class _HomePageState extends State<HomePage> {
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Startseite"),
+        title: Text(
+          "Homepage"
+        ),
       ),
       body: Center(
         child: CupertinoButton(
