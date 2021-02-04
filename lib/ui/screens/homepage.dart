@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_social_app/services/authentication_service.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_social_app/ui/widgets/drawer.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key, this.title}) : super(key: key);
@@ -13,8 +11,6 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-
-
 class _HomePageState extends State<HomePage> {
  
   @override
@@ -24,19 +20,11 @@ class _HomePageState extends State<HomePage> {
         title: Text(
           "Homepage"
         ),
+        backgroundColor: Colors.indigo[800],
       ),
+      drawer: SeriousFocusDrawer(),
       body: Center(
-        child: CupertinoButton(
-          child: Text(
-            "Ausloggen",
-            style: TextStyle(color: Colors.white),
-          ), 
-          borderRadius: BorderRadius.circular(30),
-          color: Colors.indigo[800],
-          onPressed: (){
-            context.read<AuthenticationService>().signOut();
-          }
-        ),
+
       ),
     );
   }

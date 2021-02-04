@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_social_app/model/current_user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -21,7 +22,7 @@ bool validateNames(String name){
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
   final _googleSignIn = GoogleSignIn();
-  
+
   AuthenticationService(this._firebaseAuth);
 
   Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
@@ -33,6 +34,7 @@ class AuthenticationService {
   Future<String> signIn(String email, String password)async{
     try {
       await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      await getUserCredentials();
       return "Sigend in";
     } on FirebaseAuthException catch (e) {
       return e.message;
@@ -50,6 +52,10 @@ class AuthenticationService {
         accessToken: googleAuth.accessToken,
       );
       await _firebaseAuth.signInWithCredential(credential);
+
+      var name = _firebaseAuth.currentUser.displayName.split(" ");
+      userSetup(name[0], name[1]);
+      await getUserCredentials();
       return "Sigend in with Google";
     } catch (e) {
       errMsg = 'Login failed, please try again later.';
@@ -63,23 +69,38 @@ class AuthenticationService {
       await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
       userSetup(firstName, surName);
       await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      
+      CurrentUser.email = email;
+      CurrentUser.firstName = firstName;
+      CurrentUser.surName = surName;
+      CurrentUser.uid = _firebaseAuth.currentUser.uid;
+
       return "Sigend up";
     }  on FirebaseAuthException catch (e) {
       return e.message;
     }
   }
 
-  Future<void> userSetup(String firstName, String surName){
+  Future userSetup(String firstName, String surName){
     CollectionReference users = FirebaseFirestore.instance.collection("Users");
     String uid = _firebaseAuth.currentUser.uid;
 
-    users.add({
+    users.doc(uid).set({
       'firstName': firstName,
       'surName': surName,
       'uid': uid
     });
   }
 
-  
+  Future<void> getUserCredentials() async {
+    String uid = _firebaseAuth.currentUser.uid;
+    CollectionReference userDataReference = FirebaseFirestore.instance.collection("Users");
 
-}
+    var userData = await userDataReference.doc(uid).get();
+    CurrentUser.firstName = userData["firstName"];
+    CurrentUser.surName = userData["surName"];
+    CurrentUser.uid = uid;
+    CurrentUser.email = _firebaseAuth.currentUser.email;
+    CurrentUser.photoUrl = _firebaseAuth.currentUser.photoURL;
+  }
+} 

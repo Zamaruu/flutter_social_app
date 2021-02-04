@@ -65,7 +65,6 @@ class _LoginRouteState extends State<LoginRoute> {
     //Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyHomePage(title: "SeriousFocus",)), (route) => false);
   }
 
-  
   Container _emailInputField(){
     return Container(
       margin: EdgeInsets.only(bottom: _inputFiledMargin, top: _inputFiledMargin),

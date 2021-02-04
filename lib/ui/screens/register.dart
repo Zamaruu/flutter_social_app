@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_social_app/main.dart';
 import 'package:flutter_social_app/services/authentication_service.dart';
-import 'package:flutter_social_app/ui/screens/homepage.dart';
 import 'package:flutter_social_app/ui/widgets/alerts.dart';
 import 'package:provider/provider.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -204,7 +202,6 @@ class _RegisterRouteState extends State<RegisterRoute> {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
