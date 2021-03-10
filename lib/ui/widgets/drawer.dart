@@ -134,7 +134,7 @@ class SeriousFocusDrawer extends StatelessWidget {
               borderRadius: BorderRadius.circular(30),
               color: Colors.red[800],
               onPressed: (){
-                context.read<AuthenticationService>().signOut();
+                context.read<AuthenticationService>().signOut(context);
               }
             ),
           ),

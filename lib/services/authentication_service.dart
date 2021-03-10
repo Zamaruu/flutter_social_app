@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_social_app/model/current_user.dart';
+import 'package:flutter_social_app/ui/screens/login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -27,8 +30,9 @@ class AuthenticationService {
 
   Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
 
-  Future<void> signOut() async{
+  Future<void> signOut(BuildContext context) async{
     await _firebaseAuth.signOut();
+    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => LoginRoute()), (route) => false);
   }
 
   Future<String> signIn(String email, String password)async{
